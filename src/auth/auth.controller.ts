@@ -8,6 +8,7 @@ export class AuthController {
 
     @Post('register')
     register(@Body() dto: RegisterDto) {
+        console.log('Registering user with email:', dto.email);
         return this.authService.register(dto);
     }
 }
