@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { JwtService } from 'node_modules/@nestjs/jwt/dist/jwt.service';
+import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { RegisterDto } from './dto/register.dto';
@@ -29,7 +29,7 @@ export class AuthService {
             data: {
                 email: dto.email,
                 name: dto.name,
-                password: hashedPassword,
+                passwordHash: hashedPassword,
             }
         })
 
