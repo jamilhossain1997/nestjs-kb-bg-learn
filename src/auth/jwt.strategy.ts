@@ -23,7 +23,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     if (!user) {
       throw new UnauthorizedException();
     }
-    // Attached to req.user; picked up by the CurrentUser decorator everywhere else.
     return { id: user.id, email: user.email, name: user.name };
   }
 }
