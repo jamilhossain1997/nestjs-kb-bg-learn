@@ -3,6 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { RegisterDto } from './dto/register.dto';
+import { LoginDto } from './dto/login.dto';
 const SALT_ROUNDS = 10;
 
 @Injectable()
@@ -34,6 +35,25 @@ export class AuthService {
         })
 
         return this.buildAuthResponse(newUser.id,newUser.email,newUser.name); 
+
+    }
+
+    async login(dto: LoginDto){
+        const userEmailCheck = await this.prisma.user.findUnique({
+             where:{email:dto.email},
+        })
+
+        if(!userEmailCheck){
+            throw new Error('Invalid email or password');
+        }
+
+        const passwordMatch = await bcrypt.compare(dto.password,userEmailCheck.passwordHash);
+
+        if(!passwordMatch){
+            throw new Error('Invalid email or password');
+        }
+
+        return this.buildAuthResponse(userEmailCheck.id,userEmailCheck.email,userEmailCheck.name);
 
     }
 
